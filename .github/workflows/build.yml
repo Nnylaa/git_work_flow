@@ -1,0 +1,33 @@
+name: React.js CI/CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: |
+          rm -rf node_modules package-lock.json # Clean previous installs
+          npm install                           # Install fresh dependencies
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: npm test -- --passWithNoTests
